@@ -19,6 +19,9 @@ var isDead = false;
 
 
 window.onload = function(){
+    document.getElementById("Restart").onclick = function(){
+        start();
+    };
     start();
 }
 
