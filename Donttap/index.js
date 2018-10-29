@@ -26,7 +26,7 @@ window.onload = function(){
     };
     start();
     resize();
-    requestAnimationFrame(update);
+    setInterval(update, 1);
 }
 
 function start(){
@@ -52,7 +52,7 @@ function resize(){
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 }
-function update(time){
+function update(){
     if(lastCalledTime == null || lastCalledTime < 1) {
         lastCalledTime = performance.now();
         fps = 0;
@@ -95,8 +95,6 @@ function update(time){
     
     ctx.fillRect(mouseX,mouseY,10,10)
     showFPS();
-    requestAnimationFrame(update);
-    
     
 }
 
