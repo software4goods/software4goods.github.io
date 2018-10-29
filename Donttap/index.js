@@ -19,15 +19,17 @@ var isDead = false;
 
 
 window.onload = function(){
+    canvas = document.getElementById("mainCanvas");
+    ctx = canvas.getContext("2d");
     document.getElementById("Restart").onclick = function(){
         start();
     };
     start();
+    resize();
+    requestAnimationFrame(update);
 }
 
 function start(){
-    canvas = document.getElementById("mainCanvas");
-    ctx = canvas.getContext("2d");
     isDead = false;
     grid = [
         [0,0,0,0],
@@ -39,8 +41,7 @@ function start(){
     chooseRandomTile();
     chooseRandomTile();
 
-    resize();
-    requestAnimationFrame(update);
+    
 }
 
 window.onresize = function(){
