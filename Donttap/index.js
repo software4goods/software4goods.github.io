@@ -4,8 +4,12 @@ var lastCalledTime;
 var fps = 0;
 
 var rectangleSize = 150;
+var rectAmount = 3;
 
 var mouseX = 0, mouseY = 0;
+
+var score = 0;
+var scoreprSec = 0;
 
 var grid = [
     [0,0,0,0],
@@ -13,6 +17,7 @@ var grid = [
     [0,0,0,0],
     [0,0,0,0]
 ]
+var gridNum = 2;
 
 var isDead = false;
 
@@ -27,19 +32,30 @@ window.onload = function(){
     start();
     resize();
     setInterval(update, 1);
+    window.setInterval(function(){
+        scoreprSec = score / 2;
+        score = 0;
+    }, 2000);
 }
 
 function start(){
     isDead = false;
-    grid = [
-        [0,0,0,0],
-        [0,0,0,0],
-        [0,0,0,0],
-        [0,0,0,0]
-    ]
-    chooseRandomTile();
-    chooseRandomTile();
-    chooseRandomTile();
+    score = 0;
+    scoreprSec = 0;
+    gridNum = parseInt(document.getElementById("GridSize").value);
+    rectangleSize = parseInt(document.getElementById("rectSize").value);
+    rectAmount = parseInt(document.getElementById("rectAmount").value);
+    grid = new Array(gridNum);
+
+    for (var i = 0; i < grid.length; i++) {
+        grid[i] = new Array(gridNum);
+        grid[i].fill(0,0,gridNum);
+    }
+    
+    for(var i = 0; i < rectAmount; i++){
+        chooseRandomTile();
+    }
+    
 
     
 }
@@ -93,9 +109,18 @@ function update(){
     }
     ctx.restore();
     
-    ctx.fillRect(mouseX,mouseY,10,10)
+    ctx.save();
+    ctx.fillStyle="#FFF";
+    ctx.font = "30px Arial";
+    ctx.textAlign = "center";
+    ctx.fillText("Score pr/sec: " + scoreprSec, canvas.width/2,  40);
+    ctx.restore();
     showFPS();
     
+}
+
+document.onmousedown = function(e){
+    click(e);
 }
 
 document.onmousemove = function(e){
@@ -103,8 +128,11 @@ document.onmousemove = function(e){
     mouseY = e.clientY;
 }
 
-document.onclick = function(e){
-    
+document.ondblclick = function(e){
+    click(e);
+}
+
+function click(e){
     mouseX = e.clientX;
     mouseY = e.clientY;
     if(isDead)
@@ -128,6 +156,7 @@ document.onclick = function(e){
                 if(grid[y][x] == 1){
                     grid[y][x] = 0;
                     chooseRandomTile();
+                    score++;
                 } else {
                     grid[y][x] = 2;
                     isDead = true;
@@ -144,7 +173,7 @@ function showFPS(){
     ctx.save();
     ctx.fillStyle="#FFF";
     ctx.font = "20px Arial";
-    ctx.fillText("FPS: " + Math.round(fps), 40, 30);
+    ctx.fillText("FPS: " + Math.round(fps), 40, 20);
     ctx.restore();
 }
 
